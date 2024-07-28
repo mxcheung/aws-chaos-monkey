@@ -1,9 +1,10 @@
 import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as targets from 'aws-cdk-lib/aws-events-targets';
 import * as path from 'path';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+
 
 export class AwsChaosMonkeyStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -24,6 +25,14 @@ export class AwsChaosMonkeyStack extends cdk.Stack {
       resources: [tableArn],
     }));
 
+    // Create an EventBridge rule to trigger the Lambda function every day at midnight UTC
+    const rule = new events.Rule(this, 'ChaosMonkeyRule', {
+      schedule: events.Schedule.expression('cron(0 0 * * ? *)'), // Daily at midnight UTC
+    });
 
+    // Add the Lambda function as the target of the rule
+    rule.addTarget(new targets.LambdaFunction(chaosMonkeyFunction));
+
+    
   }
 }
