@@ -4,6 +4,7 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as targets from 'aws-cdk-lib/aws-events-targets';
 import * as path from 'path';
+import { Construct } from 'constructs';
 
 
 export class AwsChaosMonkeyStack extends cdk.Stack {
