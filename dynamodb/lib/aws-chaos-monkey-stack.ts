@@ -17,8 +17,9 @@ export class AwsChaosMonkeyStack extends cdk.Stack {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../lambda')),
+      functionName: 'chaos-monkey',
     });
-
+    
     // Grant the Lambda function permissions to delete the DynamoDB table
     const tableArn = `arn:aws:dynamodb:${this.region}:${this.account}:table/fortunes`;
     chaosMonkeyFunction.addToRolePolicy(new iam.PolicyStatement({
